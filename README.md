@@ -1,6 +1,4 @@
-<div align="center"><img src="#" alt="image"/></div>
-
-
+![team image](./team6.png) 
 
 # SW정글 First Project
 
