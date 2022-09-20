@@ -29,12 +29,6 @@ def api_register():
 
 
 
-@app.route('/api/chat', methods=['GET','POST'])
-def api_chat():
-   pass
-
-
-
 
 if __name__ == '__main__':
    app.run('0.0.0.0', port=5000, debug=True)
