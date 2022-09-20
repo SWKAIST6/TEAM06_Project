@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, Blueprint
 from pymongo import MongoClient  
 import hashlib, datetime, jwt
 
@@ -10,9 +10,17 @@ db = client.dbsparta
 
 @app.route('/')
 def home():
+   return render_template('form.html')
+
+@app.route('/login')
+def getLogin():
+   return render_template('form.html')
+
+@app.route('/register')
+def getRegister():
    return render_template('signup.html')
 
-@app.route('/register', methods=['POST'])
+@app.route('/api/register', methods=['post'])
 def api_register():
    id_receive = request.form['id_give']
    pw_receive = request.form['pw_give']
@@ -26,9 +34,8 @@ def api_register():
    db.users.insert_one(user)
 
    return jsonify({'result': 'success'})
-   
 
-@app.route('/login', methods=['POST'])
+@app.route('/api/login', methods=['POST'])
 def api_login():
    id_receive = request.form['id_give']
    pw_receive = request.form['pw_give']
@@ -42,10 +49,11 @@ def api_login():
             'id': id_receive,
             'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=5)   
       }
-      token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+      token = jwt.encode(payload, 'secret', algorithm='HS256')
       return jsonify({'result': 'success', 'token': token})
    else:
       return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
+
 
 
 if __name__ == '__main__':
