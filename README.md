@@ -1,4 +1,4 @@
-<div align="center"><img src="https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D100316001590006&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fpages%2Fcategory%2FGamer%2FTeam6.lk%2Fphotos%2F&tbnid=tmOy5PXk8QsBaM&vet=12ahUKEwjLnPT68KL6AhUI_5QKHWpLDK4QMyhEegQIARBp..i&docid=_eZtSTwaQhPvpM&w=768&h=768&q=team6&ved=2ahUKEwjLnPT68KL6AhUI_5QKHWpLDK4QMyhEegQIARBp" alt="erd"/></div>
+<div align="center"><img src="https://www.google.com/imgres?imgurl=https%3A%2F%2Fstatic.remove.bg%2Fremove-bg-web%2Fc4b29bf4b97131238fda6316e24c9b3606c18000%2Fassets%2Fstart-1abfb4fe2980eabfbbaaa4365a0692539f7cd2725f324f904565a9a744f8e214.jpg&imgrefurl=https%3A%2F%2Fwww.remove.bg%2Fko&tbnid=sp12V8x9gw6KuM&vet=12ahUKEwi10tiF9qL6AhVgz4sBHVbSA-MQMygCegUIARC8AQ..i&docid=0rHTVAgbQlpKpM&w=510&h=340&q=image&ved=2ahUKEwi10tiF9qL6AhVgz4sBHVbSA-MQMygCegUIARC8AQ" alt="image"/></div>
 
 
 
@@ -16,10 +16,10 @@
 
 ### 기술스택
 <img alt="Python" src ="https://img.shields.io/badge/Python-3776AB.svg?&style=for-the-badge&logo=Python&logoColor=white"/>
-<img alt="HTML5" src ="https://img.shields.io/badge/HTML5-#E34F26.svg?&style=for-the-badge&logo=HTML5&logoColor=white"/>
-<img alt="CSS3" src ="https://img.shields.io/badge/CSS3-#1572B6.svg?&style=for-the-badge&logo=CSS3&logoColor=white"/>
-<img alt="JS" src ="https://img.shields.io/badge/JSS-#F7DF1E.svg?&style=for-the-badge&logo=JS&logoColor=white"/>
-<img alt="Flask" src ="https://img.shields.io/badge/Flask-#000000.svg?&style=for-the-badge&logo=Flask&logoColor=white"/>
+<img alt="HTML5" src ="https://img.shields.io/badge/HTML5-E34F26.svg?&style=for-the-badge&logo=HTML5&logoColor=white"/>
+<img alt="CSS3" src ="https://img.shields.io/badge/CSS3-1572B6.svg?&style=for-the-badge&logo=CSS3&logoColor=white"/>
+<img alt="JS" src ="https://img.shields.io/badge/JSS-F7DF1E.svg?&style=for-the-badge&logo=JS&logoColor=white"/>
+<img alt="Flask" src ="https://img.shields.io/badge/Flask-000000.svg?&style=for-the-badge&logo=Flask&logoColor=white"/>
 
 
 ### 개발기간
