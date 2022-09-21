@@ -14,18 +14,17 @@
         crossorigin="anonymous"></script>
 
     <!-- JS -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-        crossorigin="anonymous"></script>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript" src="./jquery.cookie.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 
 
     <!-- 구글폰트 -->
     <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
 
 
-    <title>김진섭 파트</title>
+    <title>Team 6</title>
 
     <!-- style -->
     <style type="text/css">
@@ -128,10 +127,16 @@
             let title = $("#input-title").val();
             let text = $("#input-text").val();
             let category = $("#dropdown-button").text();
+            let token = $.cookie('mytoken');
+
+            let payload = JSON.parse(atob(token.split('.')[1]));
+            let id = payload['id'];
+            let room = payload['room'];
+
             $.ajax({
                 type: "POST",
                 url: "/market",
-                data: { title_give: title, text_give: text, category_give: category },
+                data: { title_give: title, text_give: text, category_give: category, id_give: id, room_give: room },
                 success: function (response) {
                     if (response["result"] == "success") {
                         alert("저장 완료")
@@ -216,7 +221,7 @@
                                 }}</a>
                             <p class="card-text">{{ information['text'] }}</p>
                             <div class="position-absolute bottom-0 start-0">
-                                ID
+                                {{ information['id'] }}
                             </div>
                             <div class="position-absolute bottom-0 end-0">
                                 {{ information['datetime'] }}
