@@ -20,7 +20,33 @@ def getLogin():
 def getRegister():
    return render_template('signup.html')
 
-@app.route('/api/register', methods=['post'])
+@app.route('/main')
+def getMain():
+   return render_template('main.html')
+
+
+# 본인인증 API
+@app.route('/api/authentication', methods=['POST'])
+def api_authentication():
+   name_receive = request.form['name_give']
+   room_receive = request.form['room_give']
+   enter_receive = request.form['enter_give']
+   
+   print(name_receive)
+   print(room_receive)
+   print(enter_receive)
+   
+   user = {'name': name_receive, 'room': room_receive, 'enter_key': enter_receive}
+
+   result = db.junglers.find_one(user)
+
+   if result is not None:
+      return jsonify({'result': 'success'})
+   else:
+      return jsonify({'result': 'fail'})
+
+#회원가입 API
+@app.route('/api/register', methods=['POST'])
 def api_register():
    id_receive = request.form['id_give']
    pw_receive = request.form['pw_give']
@@ -35,6 +61,7 @@ def api_register():
 
    return jsonify({'result': 'success'})
 
+#로그인 API
 @app.route('/api/login', methods=['POST'])
 def api_login():
    id_receive = request.form['id_give']
@@ -44,15 +71,67 @@ def api_login():
 
    result = db.users.find_one({'id': id_receive, 'pw': pw_hash})
 
+   room_num = result['room']
+
    if result is not None:
       payload = {
             'id': id_receive,
+            'room' : room_num,
             'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=5)   
       }
       token = jwt.encode(payload, 'secret', algorithm='HS256')
       return jsonify({'result': 'success', 'token': token})
    else:
       return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
+
+#게시글 작성
+@app.route('/market', methods=['POST'])
+def post_information():
+   datetime_objected = datetime.datetime.now()
+   datetime_spring = datetime_objected.strftime('%Y-%m-%d %H:%M:%S')
+   title_receive = request.form['title_give']  # 클라이언트로부터 title 받기
+   text_receive = request.form['text_give']  # 클라이언트로부터 text 받기
+   category_receive = request.form['category_give']  # 클라이언트로부터 category 받기
+   id_receive = request.form['id_give']
+   room_receive = request.form['room_give']
+
+   informations = list(db.informations.find({}, {'_id': 0}))
+   history = len(informations)
+   post_numbers = []
+   for i in range(history):
+      post_numbers.append(i)
+   if len(post_numbers) == 0:
+      max_post_number = 0
+   else:
+      max_post_number = max(post_numbers, default=0)+1
+
+   informations = {
+      'postnumber': max_post_number,
+      'datetime': datetime_spring,
+      'title': title_receive,
+      'text': text_receive,
+      'category': category_receive,
+      'id': id_receive,
+      'room' : room_receive
+   }
+
+   # mongoDB에 데이터를 넣기
+   db.informations.insert_one(informations)
+   return jsonify({'result': 'success'})
+
+
+#게시글 불러오기
+@app.route('/market', methods=['GET'])
+def show_information():
+   data = list(db.informations.find({}, {'_id': False}))
+   return render_template('main.html', informations=data)
+
+
+#게시글 채팅창으로 넘어가기
+@app.route('/exchange/<postnumber>')
+def url_generator(postnumber):
+   data = list(db.informations.find({}, {'_id': False}))
+   return render_template('exchange.html', informations=data[int(postnumber)])
 
 
 

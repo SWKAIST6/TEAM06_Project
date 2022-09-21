@@ -32,7 +32,7 @@
                         if (response["result"] == "success") {
                             $.cookie('mytoken', response['token']);
                             alert("로그인 성공!");
-                            window.location.reload
+                            window.location.replace('/market')
                         } else {
                             alert("서버 오류!")
                         }

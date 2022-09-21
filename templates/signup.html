@@ -15,32 +15,62 @@
     />
 
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript" src="./jquery.cookie.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     
     <title>Team6</title>
 
     <script>
 
+        function authentication() {
+            let name = $("#name_newUser").val();
+            let room = $("#room_newUser").val();
+            let enter = $("#enter_newUser").val();
+
+            $.ajax({
+                type: "POST",
+                url: "/api/authentication",
+                data: { name_give: name, room_give: room, enter_give: enter },
+                success: function (response) {
+                    if (response["result"] == "success") {
+                        $('#authentication_button').text("인증완료");
+                        $('#authentication_button').prop("disabled", true);
+                        $('#name_newUser').prop("disabled", true);
+                        $('#room_newUser').prop("disabled", true);
+                        $('#enter_newUser').prop("disabled", true);
+                        $('#register_button').removeAttr("disabled");
+
+                        alert("본인인증이 완료되었습니다.");
+                    } else {
+                        alert("본인인증 실패")
+                    }
+                }
+            })
+
+        }
+
 
         function register() {
-                let id = $("#id_newUser").val();
-                let pw = $("#pw_newUser").val();
-                let name = $("#name_newUser").val();
-                let room = $("#room_newUser").val();
+            let id = $("#id_newUser").val();
+            let pw = $("#pw_newUser").val();
+            let name = $("#name_newUser").val();
+            let room = $("#room_newUser").val();
 
-                $.ajax({
-                    type: "POST", 
-                    url: "/api/register", 
-                    data: { id_give: id, pw_give: pw, name_give: name, room_give: room }, 
-                    success: function (response) { 
-                        if (response["result"] == "success") {
-                            alert("회원가입 완료!");
-                            window.location.replace('/login')
-                        } else {
-                            alert("서버 오류!")
-                        }
+            $.ajax({
+                type: "POST", 
+                url: "/api/register", 
+                data: { id_give: id, pw_give: pw, name_give: name, room_give: room }, 
+                success: function (response) { 
+                    if (response["result"] == "success") {
+                        alert("회원가입 완료!");
+                        window.location.replace('/login')
+                    } else {
+                        alert("서버 오류!")
                     }
-                })
-            }
+                }
+            })
+        }
 
     </script>
 </head>
@@ -69,7 +99,7 @@
                 </div>
                 <div class="d-flex justify-content-end mt-3">
                     <form action="" class="me-3 p-2">
-                        <button type="submit" class="btn btn-primary">본인인증</button>
+                        <button type="button" onclick="authentication()" class="btn btn-primary" id="authentication_button">본인인증</button>
                     </form>
                 </div>
             </div>
@@ -90,7 +120,7 @@
                 </div>
                 <div class="d-flex justify-content-end mt-3">
                     <form action="" class="me-3 p-2">
-                        <button type="submit" onclick="register()" class="btn btn-primary">회원가입</button>
+                        <button type="submit" onclick="register()" class="btn btn-primary" id="register_button" disabled=true>회원가입</button>
                     </form>
                 </div>
             </div>
