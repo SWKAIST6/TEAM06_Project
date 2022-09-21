@@ -1,0 +1,253 @@
+<!Doctype html>
+<html lang="ko">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+        crossorigin="anonymous"></script>
+
+    <!-- JS -->
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+    
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+
+    <title>Team 6</title>
+
+    <!-- style -->
+    <style type="text/css">
+        * {
+            font-family: "Stylish", sans-serif;
+        }
+
+        #wrap {
+            width: 1200px;
+            margin: auto;
+            margin-top: 40px;
+        }
+
+        #wrap2 {
+            width: 1200px;
+            margin: auto;
+        }
+
+        #home-button {
+            font-size: 30px;
+            font: bold;
+            width: 150px;
+            margin: auto;
+            float: left;
+            border: 0.5px solid;
+        }
+
+        #post-button {
+            width: 100px;
+            margin: auto;
+            float: right;
+            border: 0.5px solid;
+        }
+
+        #post-card {
+            height: 350px;
+            width: 860px;
+        }
+
+        #new-card {
+            margin-bottom: 4px;
+            margin-top: 15px;
+            float: left;
+        }
+
+        #space {
+            height: 80px;
+        }
+
+        #dropdown-button {
+            width: 820px;
+            margin-bottom: 10px;
+        }
+
+        .card-body {
+            height: 200px;
+        }
+
+        #input-title {
+            margin-bottom: 10px;
+        }
+
+        #cancel {
+            float: right;
+        }
+
+        #card-stack {
+            margin-top: 10px;
+        }
+    </style>
+
+    <script>
+        // 숨겨진 카드 입력란 불러오기
+        function openCard() {
+            $("#post-card").show();
+            $("#post-button").hide();
+            let tempHtml = `<button type="button" id="post-button" class="btn btn-light" onclick="reload()">작성하기</button>`
+            $("#post-button").append(tempHtml);
+        }
+
+        function dropDown1() {
+            $("#dropdown-button").text("구해요");
+        }
+
+        function dropDown2() {
+            $("#dropdown-button").text("팔아요");
+        }
+
+        function dropDown3() {
+            $("#dropdown-button").text("나눠요");
+        }
+
+        function reload() {
+            window.location.reload();
+        }
+
+        // 저장된 게시물 서버에 보내기
+        function saveInformation() {
+
+            let title_raw = $("#input-title").val();
+            if (title_raw == '') {
+                alert("물품명을 입력하세요!")      
+            } else {
+                title = title_raw
+            };
+            let text = $("#input-text").val();
+            let category_raw = $("#dropdown-button").text();
+            if (category_raw == "나눠요") {
+                category = "나눠요"
+            } else if (category_raw == "팔아요") {
+                category = "팔아요"
+            } else {
+                category = "구해요"
+            }
+            let token = $.cookie('mytoken');
+
+            let payload = JSON.parse(atob(token.split('.')[1]));
+            let id = payload['id'];
+            let room = payload['room'];
+
+            $.ajax({
+                type: "POST",
+                url: "/market",
+                data: { title_give: title, text_give: text, category_give: category, id_give: id, room_give: room },
+                success: function (response) {
+                    if (response["result"] == "success") {
+                        alert("저장 완료")
+                        window.location.reload();
+                    } else {
+                        alert("서버 오류!")
+                    }
+                }
+            })
+
+        }
+
+    </script>
+
+</head>
+
+<body>
+
+    <div id="wrap">
+        <button type="button" id="home-button" class="btn btn-light" onclick=window.location.reload()>정글 마켓</button>
+        <button type="button" id="post-button" class="btn btn-light" onclick="openCard()">작성하기</button>
+
+        <p id="space">
+        </p>
+
+        <!-- 게시물 입력란 -->
+        <div class="card" id="post-card" style=display:none;>
+            <div class="card-body">
+                <label for="exampleFormControlTextarea1" class="form-label">카테고리</label>
+                <div class="dropdown">
+                    <button id="dropdown-button" class="btn btn-secondary dropdown-toggle" type="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        거래유형 미지정
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" onclick="dropDown1()">구해요</a></li>
+                        <li><a class="dropdown-item" onclick="dropDown2()">팔아요</a></li>
+                        <li><a class="dropdown-item" onclick="dropDown3()">나눠요</a></li>
+                    </ul>
+                    <div class="mb-3">
+                        <label for="exampleFormControlTextarea1" class="form-label">물품명</label>
+                        <textarea class="form-control" id="input-title" rows="1"></textarea>
+
+                        <label for="exampleFormControlTextarea1" class="form-label">간단한 설명</label>
+                        <textarea class="form-control" id="input-text" rows="2"></textarea>
+                    </div>
+                </div>
+                <a href="#" class="btn btn-primary" onclick="saveInformation(), hide()">저장</a>
+                <a href="#" id="cancel" class="btn btn-warning" onclick="reload()">취소</a>
+            </div>
+        </div>
+
+        <!-- 생성된 게시물 표시란 -->
+        <div id="card-stack" class="row row-cols-1 row-cols-md-3 g-4">
+            <!-- <div id="new-card" class="col">
+                <div class="card">
+                    <class="card-img-top" alt="...">
+                        <div class="card-header">
+                            category
+                        </div>
+                        <div class="card-body">
+                            <a class="card-title" href='/exchange'>물품</a>
+                            <p class="card-text">간단한 설명</p>
+                            <div class="position-absolute bottom-0 start-0">
+                                ID
+                            </div>
+                            <div class="position-absolute bottom-0 end-0">
+                                날짜
+                            </div>
+                        </div>
+                </div>
+            </div> -->
+            {% for information in informations %}
+            <div id="{{ information['_id'] }}" class="col">
+                <div class="card">
+                    <class="card-img-top" alt="...">
+                        <div class="card-header">
+                            {{ information['category'] }}
+                        </div>
+                        <div class="card-body">
+                            <a class="card-title" href='/exchange/{{information["_id"]}}'>{{ information['title']
+                                }}</a>
+                            <p class="card-text">{{ information['text'] }}</p>
+                            <div class="position-absolute bottom-0 start-0">
+                                {{ information['id'] }}
+                            </div>
+                            <div class="position-absolute bottom-0 end-0">
+                                {{ information['datetime'] }}
+                            </div>
+                        </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+
+</body>
+
+</html>

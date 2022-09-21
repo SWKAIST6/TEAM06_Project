@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Meta Data -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+        crossorigin="anonymous"></script>
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+
+    <title>exchange</title>
+</head>
+
+<body>
+    <div id="wrap">
+        <button type="button" id="home-button" class="btn btn-light" onclick="location.href='/market'">정글 마켓</button>
+        <div id="box-title" class="border rounded mt-5 p-3 d-flex justify-content-between">
+            <div id="head-bar" class="p-2 lead fw-bold">
+                {{ category }}
+            </div>
+            <div class="d-flex">
+                <button class="me-3 btn btn-primary p-2" id="exchange-complete" style=display:none;>
+                    거래완료
+                </button>
+                <button class="btn btn-primary p-2" onclick="location.href='/market'">
+                    거래취소
+                </button>
+            </div>
+        </div>
+
+        <div class="card" id="post-card" style=display:none;>
+            <div class="card-body">
+                <label for="exampleFormControlTextarea1" class="form-label">카테고리</label>
+                <div class="dropdown">
+                    <button id="dropdown-button" class="btn btn-secondary dropdown-toggle" type="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        거래 유형을 선택해주세요
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" onclick="dropDown1()">구해요</a></li>
+                        <li><a class="dropdown-item" onclick="dropDown2()">팔아요</a></li>
+                        <li><a class="dropdown-item" onclick="dropDown3()">나눠요</a></li>
+                    </ul>
+                    <div class="mb-3">
+                        <label for="exampleFormControlTextarea1" class="form-label">물품명</label>
+                        <textarea class="form-control" id="input-title" rows="1"></textarea>
+
+                        <label for="exampleFormControlTextarea1" class="form-label">간단한 설명</label>
+                        <textarea class="form-control" id="input-text" rows="2"></textarea>
+                    </div>
+                </div>
+                <a href="#" class="btn btn-primary" onclick="editInformation()">저장</a>
+                <a href="#" id="cancel" class="btn btn-warning" onclick="reload()">취소</a>
+            </div>
+        </div>
+        <div id="post-text">
+            <div id="box-info" class="container border rounded py-3 px-5 mt-5">
+                <div class="d-flex justify-content-between">
+                    <span class="fs-2">
+                        {{ title }}
+                    </span>
+                    <span class="align-self-center" id="username">
+                        {{ username }}
+                    </span>
+                    <span class="align-self-center">
+                        {{ datetime }}
+                    </span>
+                </div>
+                <div class="d-flex mt-3 justify-content-around">
+                    <span class="lead">
+                        {{ text }}
+                    </span>
+                    <span id="edit-delete-button" style=display:none;>
+                        <button class="me-3 btn btn-primary p-2" onclick="hideAndShow()">
+                            수정
+                        </button>
+                        <button class="me-3 btn btn-primary p-2 " onclick="deleteInformation()">
+                            삭제
+                        </button>
+                    </span>
+                </div>
+            </div>
+
+
+            <div id="message_container" class="container text-center mt-4">
+                {% for message in messages %}
+
+                <div class="row justify-content-start mt-3">
+                    <div class="col-6 d-flex justify-content-between p-3 border rounded">
+                        <div class="me-2">{{message.content}}</div>
+                        <div class="d-flex">
+                            <span class="me-3">{{message.user}}</span>
+                        </div>
+                    </div>
+                    <div class="col-1 d-flex align-items-end">
+                        <small>{{message.created}}</small>
+                    </div>
+                </div>
+
+                {% endfor %}
+
+                <!-- 메세지 예제
+            <div class="row justify-content-start mt-3">
+                <div class="col-6 d-flex justify-content-between p-3 border rounded">
+                    <div class="me-2">하나 남았어요</div>
+                    <div class="d-flex">
+                        <span class="me-3">id2</span>
+                        <span>404</span>
+                    </div>
+                </div>
+                <div class="col-1 d-flex align-items-end">
+                    <span>2022.09.20</span>
+                </div>
+            </div>
+            
+            
+            <div class="row justify-content-end mt-3">
+                <div class="col-1 d-flex align-items-end">
+                    <span>2022.09.20</span>
+                </div>
+                <div class="col-6 d-flex justify-content-between p-3 border rounded">
+                    <div class="me-2">두개 남았어요</div>
+                    <div class="d-flex">
+                        <span class="me-3">id2</span>
+                        <span>404</span>
+                    </div>
+                </div>
+            </div> -->
+
+            </div>
+
+            <div class="container mt-5" style="visibility:hidden;">
+                <div class="fs-1 text-center border rounded p-3 bg-secondary bg-opacity-50">
+                    완료된 거래입니다.
+                </div>
+            </div>
+
+
+            <div id="message-input" class="container mt-5 text-center fixed-bottom mb-5">
+
+                <form id="input_form" class="d-flex justify-content-between border">
+                    <textarea id="input_text" row="5" class="form-control" name="chat_text" placeholder="enter info"
+                        style="height:6rem;"></textarea>
+                    <!-- textarea html입력 방지주석 -->
+                    <input class="ms-1" type="submit">
+                </form>
+
+            </div>
+
+
+        </div>
+</body>
+<style>
+    * {
+        font-family: "Stylish", sans-serif;
+    }
+
+    html,
+    body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    #wrap {
+        width: 1200px;
+        margin: auto;
+        margin-top: 40px;
+    }
+
+    #home-button {
+        font-size: 30px;
+        font: bold;
+        width: 150px;
+        margin: auto;
+        float: left;
+        border: 0.5px solid;
+    }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.min.js"></script>
+<script>
+    const socket = io.connect("http://127.0.0.1:5000");
+
+    socket.on('connect', function () {
+        socket.emit('join_room', {
+            username: "{{username}}",
+            room_id: "{{objectid}}"
+        });
+
+        let message_text = document.getElementById('input_text');
+
+        document.getElementById('input_form').onsubmit = function (e) {
+            e.preventDefault();
+            let message = message_text.value.trim();
+            console.log(message);
+            console.log('###############will it work?');
+
+            if (message.length) {
+                socket.emit('send_message', {
+                    username: "{{username}}",
+                    room_id: "{{objectid}}",
+                    message: message
+                });
+            };
+            console.log("###### form onsubmit success")
+
+        }
+        message_text.value = '';
+        message_text.focus();
+    })
+
+
+    socket.on('join_room_announcement', function (data) {
+
+        let message_input = document.getElementById('message_container');
+
+        const newNode = document.createElement('div');
+        newNode.innerHTML = `
+            <div class="row justify-content-start mt-3">
+                <div class="col-6 d-flex justify-content-between p-3 border rounded">
+                    <div class="">${data['username']}님이 채팅방에 들어오셨습니다</div>
+                </div>
+                <div class="col-1 d-flex align-items-end">
+                    <small class="small">${new Date().toDateString()}</small>
+                </div>
+            </div>`
+
+        message_input.appendChild(newNode);
+        console.log("Join success")
+    });
+
+    socket.on('received_message', function (data) {
+        let message_container = document.getElementById('message_container');
+
+        const nodeEle = document.createElement('div');
+
+        nodeEle.innerHTML = `<div class="row justify-content-start mt-3">
+                <div class="col-6 d-flex justify-content-between p-3 border rounded">
+                    <div class="me-2">${data['message']}</div>
+                    <div class="d-flex">
+                        <span class="me-3">${data['username']}</span>
+                        <span>404</span>
+                    </div>
+                </div>
+                <div class="col-1 d-flex align-items-end">
+                    <small>${new Date().toDateString()}</small>
+                </div>
+                </div>`;
+
+        message_container.appendChild(nodeEle);
+        console.log("receiving the message success");
+    });
+
+
+    function deleteInformation() {
+        let objectid = $(location).attr('pathname').split('/')[2]
+
+        $.ajax({
+            type: "POST",
+            url: "/market/delete",
+            data: { 'objectid_give': objectid },
+            success: function (response) {
+                if (response['result'] == 'success') {
+                    alert('삭제 완료!')
+                    window.location.replace('/market')
+                }
+            }
+        })
+    }
+
+
+    function editInformation() {
+        let objectid = $(location).attr('pathname').split('/')[2];
+        let title_raw = $("#input-title").val();
+        if (title_raw == '') {
+            alert("물품명을 입력하세요!")
+        } else {
+            title = title_raw
+        };
+        let text = $("#input-text").val();
+        let category_raw = $("#dropdown-button").text();
+        if (category_raw == "나눠요") {
+            category = "나눠요"
+        } else if (category_raw == "팔아요") {
+            category = "팔아요"
+        } else {
+            category = "구해요"
+        }
+        $.ajax({
+            type: "POST",
+            url: "/market/edit",
+            data: { objectid_give: objectid, title_give: title, text_give: text, category_give: category },
+            success: function (response) {
+                if (response["result"] == "success") {
+                    alert("수정 완료")
+                    window.location.replace("/market");
+                } else {
+                    alert("서버 오류!")
+                }
+            }
+        })
+
+    }
+
+
+    function hideAndShow() {
+        $("#post-card").show();
+        $("#post-text").hide();
+    }
+
+    function reload() {
+        window.location.reload();
+    }
+    function dropDown1() {
+        $("#dropdown-button").text("구해요");
+    }
+
+    function dropDown2() {
+        $("#dropdown-button").text("팔아요");
+    }
+
+    function dropDown3() {
+        $("#dropdown-button").text("나눠요");
+    }
+
+    function reload() {
+        window.location.reload();
+    }
+
+    $(document).ready(function () {
+        let token = $.cookie('mytoken');
+        let payload = JSON.parse(atob(token.split('.')[1]));
+        let token_id = payload['id'];
+        console.log(token_id);
+        let userid = ($("#username").text()).trim();
+        console.log(userid);
+        if (token_id == userid) {
+            $("#edit-delete-button").show();
+            $("#exchange-complete").show();
+        }
+    })
+
+
+
+
+</script>
+
+</html>
