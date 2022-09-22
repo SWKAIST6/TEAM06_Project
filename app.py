@@ -149,7 +149,7 @@ def url_generator(objectid):
    messages = list(find_messages(objectid))
 
    return render_template('exchange.html',title=title, category=category, datetime=datetime,
-      text=text, username=username, objectid = objectid, done=done, messages=messages )
+      text=text, username=username, objectid = objectid, done=done, messages=messages[::-1] )
 
 #게시글 삭제하기
 @app.route('/market/delete', methods=['POST'])

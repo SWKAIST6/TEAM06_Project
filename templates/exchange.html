@@ -14,7 +14,7 @@
         integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
         crossorigin="anonymous"></script>
 
-    <!-- 구글폰트 -->   
+    <!-- 구글폰트 -->
     <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
 
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -31,23 +31,41 @@
             <div class="justify-content-start">
                 <button type="button" id="home-button" class="btn btn-light" onclick="location.href='/market'">정글 마켓</button>
             </div>
-            <div id="box-title" class="border rounded mt-1 p-3 d-flex justify-content-between">
-                <div id="head-bar" class="p-2 lead fw-bold">
-                    {{ category }}
+        </div>
+        <div class="container">
+            <div id="space">
+            </div>
+            <div class="card">
+                <h5 class="card-header">{{ category }}</h5>
+                <div>
+                    <div class="card-body d-flex justify-content-between">
+                        <div>
+                            <h5 class="card-title"> {{ title }} </h5>
+                            <p class="card-text"> {{ text }} </p>
+                        </div>
+                        {% if done == 0 %}
+                        <div id = "button-box" class="pt-3" style="margin:0;">
+                            <a href="#" class="btn btn-success" onclick="endRoom()">거래완료하기</a>
+                            <a href="#" class="btn btn-secondary" onclick="hideAndShow()">수정</a>
+                            <a href="#" class="btn btn-danger" onclick="deleteInformation()">
+                                삭제
+                            </a>
+                            <a href="#" class="btn btn-warning" onclick="location.href='/market'">취소</a>
+                        </div>
+                        {% endif %}
+
+                    </div>
+                    <div class="card-footer text-muted">
+                        <span id="username">
+                            {{ username }}
+                        </span>
+                        <span id="datetime">
+                            {{ datetime }}
+                        </span>
+                    </div>
                 </div>
-                {% if done == 0 %}
-                <div class="d-flex">
-                    <button class="me-3 btn btn-primary p-2" id="exchange-complete" style=display:none; onclick="endRoom()">
-                        거래완료
-                    </button>
-                    <button class="btn btn-primary p-2" onclick="location.href='/market'">
-                        거래취소
-                    </button>
-                </div>
-                {% endif %}
             </div>
         </div>
-        
         <div class="container">
             <div class="card" id="post-card" style=display:none;>
                 <div class="card-body">
@@ -75,40 +93,9 @@
                 </div>
             </div>
         </div>
+
         <div class="container">
             <div id="post-text">
-                <div id="box-info" class="border rounded py-3 px-5 mt-5">
-                    <div id="box-info" class="container border rounded py-3 px-5 mt-5">
-                        <div class="d-flex justify-content-between">
-                            <span class="fs-2">
-                                {{ title }}
-                            </span>
-                            <span class="align-self-center" id="username">
-                                {{ username }}
-                            </span>
-                            <span class="align-self-center">
-                                {{ datetime }}
-                            </span>
-                        </div>
-                        <div class="d-flex mt-3 justify-content-around">
-                            <span class="lead">
-                                {{ text }}
-                            </span>
-                            {% if done == 0 %}
-                            <span id="edit-delete-button" style=display:none;>
-                                <button class="me-3 btn btn-primary p-2" onclick="hideAndShow()">
-                                    수정
-                                </button>
-                                <button class="me-3 btn btn-primary p-2 " onclick="deleteInformation()">
-                                    삭제
-                                </button>
-                            </span>
-                            {% else %}
-                            <span>완료된 거래로 수정 불가</span>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
 
                 <div id="message_container" class="container text-center mt-4">
                     {% if done == 0 %}
@@ -141,7 +128,7 @@
                         {% endfor %}
                     {% endif %}
                 </div>
-                
+
                 {% if done == 1 %}
                     <div id="message-finished" class="container mt-5">
                 {% else %}
@@ -153,7 +140,7 @@
                 </div>
 
             </div>
-        
+
         </div>
         </div>
     </div>
@@ -169,38 +156,76 @@
             </form>
         </div>
     {% endif %}
-        
+
     </body>
 <style>
-    * {
-        font-family: "Stylish", sans-serif;
-    }
 
     html,
     body {
         margin: 0;
-        height: 100%;
+        height: auto;
+        min-height:100%;
     }
 
     .footer {
         position:relative;
-        transform: translateY(-200%);
+        transform: translateY(-100%);
         margin-bottom: 5rem;
     }
 
+    * {
+        font-family: "Stylish", sans-serif;
+    }
+
     #wrap {
-        width: 1200px;
-        margin: auto;
-        margin-top: 40px;
+        width: 85%;
+        margin: 20px auto;
+        margin-top: 20px;
+        overflow: hidden;
+    }
+
+    #space {
+        height: 100px;
     }
 
     #home-button {
         font-size: 30px;
         font: bold;
-        width: 150px;
-        margin: auto;
+        color: white;
+        width: 32%;
         float: left;
-        border: 0.5px solid;
+        background-color: #006400;
+    
+    }
+    #button-box {
+        float : right;
+        margin-bottom : 15px;
+    }
+
+    .btn-primary {
+        background-color: #b4b4b4;
+        color : black;
+        border : none;
+    }
+
+    .card-body {
+        height: 100%;
+        width: 100%;
+    }
+
+    #username {
+        float: left;
+    }
+
+    #datetime {
+        float: right;
+    }
+
+    .card-header {
+        font-size : 20px;
+        font-weight :1000;
+        background-color: black;
+        color : white; 
     }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.min.js"></script>
@@ -230,12 +255,12 @@
             };
             console.log("###### form onsubmit success")
 
+            message_text.value = '';
+            message_text.focus();
         }
-        message_text.value = '';
-        message_text.focus();
     })
     }
-    
+
 
 
     socket.on('join_room_announcement', function (data) {
@@ -350,8 +375,8 @@
 
     function hideAndShow() {
         $("#post-card").show();
-        $("#post-text").hide();
-        $("#message-input").hide();
+        // $("#post-text").hide();
+        // $("#message-input").hide();
     }
 
     function reload() {
