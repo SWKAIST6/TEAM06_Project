@@ -43,6 +43,12 @@
                     }
                 })
             }
+            
+            $(document).ready(function (){
+                if ($.cookie('mytoken') != undefined) {
+                window.location.replace('/market')
+                }
+            })
     </script>
 
     
