@@ -21,7 +21,7 @@
 
     <!-- 구글폰트 -->
     <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
-    
+
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
@@ -36,35 +36,34 @@
         }
 
         #wrap {
-            width: 1200px;
-            margin: auto;
-            margin-top: 40px;
-        }
-
-        #wrap2 {
-            width: 1200px;
-            margin: auto;
+            width: 85%;
+            margin: 20px auto;
+            margin-top: 20px;
         }
 
         #home-button {
             font-size: 30px;
             font: bold;
-            width: 150px;
-            margin: auto;
+            color: white;
+            width: 32%;
             float: left;
-            border: 0.5px solid;
+            background-color: #006400;
         }
 
         #post-button {
-            width: 100px;
-            margin: auto;
+            font-size: 30px;
+            font: bold;
+            color: white;
+            width: 200px;
             float: right;
-            border: 0.5px solid;
+            background-color: black;
+            border: black;
         }
 
         #post-card {
-            height: 350px;
-            width: 860px;
+            height: 330px;
+            width: 100%;
+            margin: auto;
         }
 
         #new-card {
@@ -78,8 +77,12 @@
         }
 
         #dropdown-button {
-            width: 820px;
-            margin-bottom: 10px;
+            width: 100%;
+            margin: auto;
+            margin-bottom: 15px;
+            background-color: black;
+            border: none;
+            color: white;
         }
 
         .card-body {
@@ -97,8 +100,32 @@
         #card-stack {
             margin-top: 10px;
         }
+
+        .btn-primary {
+            background-color: #006400;
+            border: none;
+        }
+
+        .btn-warning {
+            background-color: #b4b4b4;
+            color: black;
+            border: none;
+        }
+
+        .card-header {
+            background-color: #b4b4b4;
+            color: black;
+            font-size: 18px;
+            font : bold;
+            text-align: center;
+        }
+
+        .card-title {
+            font-size: 20px;
+        }
     </style>
 
+<<<<<<< HEAD
     <script>
         // 숨겨진 카드 입력란 불러오기
 
@@ -177,11 +204,13 @@
 
     </script>
 
+=======
+>>>>>>> ca2c167399065952e528c10c5d92c6a06da3c36f
 </head>
 
 <body>
 
-    <div id="wrap">
+    <div id="wrap" class="col">
         <button type="button" id="home-button" class="btn btn-light" onclick=window.location.reload()>정글 마켓</button>
         <button type="button" id="post-button" class="btn btn-light" onclick="openCard()">작성하기</button>
         <button type="button" id="logout-button" class="btn btn-light" onclick="logout()">로그아웃</button>
@@ -196,7 +225,7 @@
                 <div class="dropdown">
                     <button id="dropdown-button" class="btn btn-secondary dropdown-toggle" type="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        거래유형 미지정
+                        거래 목적을 선택해주세요 :)
                     </button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" onclick="dropDown1()">구해요</a></li>
@@ -211,7 +240,7 @@
                         <textarea class="form-control" id="input-text" rows="2"></textarea>
                     </div>
                 </div>
-                <a href="#" class="btn btn-primary" onclick="saveInformation(), hide()">저장</a>
+                <a href="#" id="save-button" class="btn btn-primary" onclick="saveInformation(), hide()">저장</a>
                 <a href="#" id="cancel" class="btn btn-warning" onclick="reload()">취소</a>
             </div>
         </div>
@@ -261,5 +290,74 @@
 
 
 </body>
+
+
+<script>
+    // 숨겨진 카드 입력란 불러오기
+    function openCard() {
+        $("#post-card").show();
+        $("#post-button").hide();
+        let tempHtml = `<button type="button" id="post-button" class="btn btn-light" onclick="reload()">작성하기</button>`
+        $("#post-button").append(tempHtml);
+    }
+
+    function dropDown1() {
+        $("#dropdown-button").text("구해요");
+    }
+
+    function dropDown2() {
+        $("#dropdown-button").text("팔아요");
+    }
+
+    function dropDown3() {
+        $("#dropdown-button").text("나눠요");
+    }
+
+    function reload() {
+        window.location.reload();
+    }
+
+    // 저장된 게시물 서버에 보내기
+    function saveInformation() {
+
+        let title_raw = $("#input-title").val();
+        if (title_raw == '') {
+            alert("물품명을 입력하세요!")
+        } else {
+            title = title_raw
+        };
+        let text = $("#input-text").val();
+        let category_raw = $("#dropdown-button").text();
+        if (category_raw == "나눠요") {
+            category = "나눠요"
+        } else if (category_raw == "팔아요") {
+            category = "팔아요"
+        } else {
+            category = "구해요"
+        }
+        let token = $.cookie('mytoken');
+
+        let payload = JSON.parse(atob(token.split('.')[1]));
+        let id = payload['id'];
+        let room = payload['room'];
+
+        $.ajax({
+            type: "POST",
+            url: "/market",
+            data: { title_give: title, text_give: text, category_give: category, id_give: id, room_give: room },
+            success: function (response) {
+                if (response["result"] == "success") {
+                    alert("저장 완료")
+                    window.location.reload();
+                } else {
+                    alert("서버 오류!")
+                }
+            }
+        })
+
+    }
+
+</script>
+
 
 </html>

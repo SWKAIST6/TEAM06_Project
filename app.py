@@ -15,8 +15,8 @@ app = Flask(__name__)
 ### 내가 추가
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-# client = MongoClient ('localhost', 27017)
-client = MongoClient('mongodb://test:test@localhost',27017)
+client = MongoClient ('localhost', 27017)
+# client = MongoClient('mongodb://test:test@localhost',27017)
 db = client.dbsparta  
 
 @app.route('/')
@@ -110,7 +110,8 @@ def post_information():
       'text': text_receive,
       'category': category_receive,
       'id': id_receive,
-      'room' : room_receive
+      'room' : room_receive,
+      'done':0
    }
    # mongoDB에 데이터를 넣기
    db.informations.insert_one(informations)
@@ -138,14 +139,13 @@ def url_generator(objectid):
    datetime = data['datetime'] 
    text = data['text']
    username = data['id']
+   done = data['done']
 
 
    messages = list(find_messages(objectid))
-   app.logger.info(type(objectid))
-
 
    return render_template('exchange.html',title=title, category=category, datetime=datetime,
-      text=text, username=username, objectid = objectid, messages=messages )
+      text=text, username=username, objectid = objectid, done=done, messages=messages[::-1] )
 
 #게시글 삭제하기
 @app.route('/market/delete', methods=['POST'])
@@ -174,6 +174,18 @@ def edit_information():
    return jsonify({'result': 'success'})
 
 
+@app.route('/endroom', methods=['POST'])
+def end_room():
+   objectid = ObjectId(request.form['objectid_give'])
+   db.informations.update_one(
+      {'_id': objectid},
+      {'$set':{
+         'done':1
+      }
+      }
+   )
+   return jsonify({'result': 'success'})
+
 
 
 ### 내가 추가 - 소켓 시작
@@ -195,4 +207,4 @@ def handle_send_message(data):
 
 
 if __name__ == '__main__':  
-   app.run('0.0.0.0', port=5000, debug=True)
+   socketio.run(app, debug=True)
