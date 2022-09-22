@@ -4,8 +4,8 @@
 
 
 
-### 배포주소 [GoTo](주소입력)
-### 팀노션 [GoTo](주소입력)
+### 배포주소 [GoTo](http://yeriiin.shop/)
+### 팀노션 [GoTo](https://www.notion.so/WEEK00-6NewTon-Project1-4e056a58296041aeafe407368f13dc89)
 - 기획의도, 기능구현, 와이어 프레임
 
 ## 프로젝트 설명
