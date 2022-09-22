@@ -23,10 +23,6 @@ db = client.dbsparta
 def home():
    return render_template('form.html')
 
-@app.route('/login')
-def getLogin():
-   return render_template('form.html')
-
 @app.route('/register')
 def getRegister():
    return render_template('signup.html')
