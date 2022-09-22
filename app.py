@@ -178,6 +178,18 @@ def edit_information():
    return jsonify({'result': 'success'})
 
 
+@app.route('/endroom', methods=['POST'])
+def end_room():
+   objectid = ObjectId(request.form['objectid_give'])
+   db.informations.update_one(
+      {'_id': objectid},
+      {'$set':{
+         'done':1
+      }
+      }
+   )
+   return jsonify({'result': 'success'})
+
 
 
 ### 내가 추가 - 소켓 시작
