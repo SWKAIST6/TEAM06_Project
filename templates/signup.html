@@ -40,13 +40,13 @@
                         $('#enter_newUser').prop("disabled", true);
                         $('#register_button').removeAttr("disabled");
 
-                        alert("본인인증이 완료되었습니다.");
+                        alert("정글러 인증이 완료되었습니다.");
                     } 
                     else if (response["result"] == "alreadyUser") {
                         alert("이미 가입된 유저입니다.")
                     }
                     else {
-                        alert("본인인증 실패")
+                        alert("인증 실패")
                     }
                 }
             })
@@ -66,13 +66,12 @@
                 url: "/api/register", 
                 data: { id_give: id, pw_give: pw, name_give: name, room_give: room }, 
                 success: function (response) { 
-                    console.log(response);
                     if (response["result"] == "success", response["duplicate"] == 0) {
-                        alert("회원가입 완료!");
-                        window.location.replace('/login')
+                        alert("회원가입 완료!")
+                        window.location.replace('/');
                     } 
                     else if (response["result"] == "success", response["duplicate"] == 1) {
-                        alert("중복된 ID입니다")
+                        alert("중복된 ID 입니다.")
                     }
                     else {
                         alert("서버 오류!")
@@ -129,7 +128,7 @@
                 </div>
                 <div class="d-flex justify-content-end mt-3">
                     <form action="" class="me-3 p-2">
-                        <button type="submit" onclick="register()" class="btn btn-primary" id="register_button" disabled=true>회원가입</button>
+                        <button type="button" onclick="register()" class="btn btn-primary" id="register_button" disabled=true>회원가입</button>
                     </form>
                 </div>
             </div>
